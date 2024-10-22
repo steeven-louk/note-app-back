@@ -15,7 +15,7 @@ const middleware = async (req, res, next) => {
         if (!token) {
             return res.status(401).json({ success: false, message: "Unauthorized, token is missing" });
         }
-        console.log("tokennn", token)
+
         // Décoder le token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -23,10 +23,10 @@ const middleware = async (req, res, next) => {
         if (!decoded) {
             return res.status(401).json({ success: false, message: "Invalid token" });
         }
-        console.log("decode", decoded)
+
         // Rechercher l'utilisateur dans la base de données par ID décodé
         const user = await User.findById(decoded.user.id);
-        console.log("userrrrr", user)
+        
         // Vérifier si l'utilisateur existe
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
@@ -42,5 +42,6 @@ const middleware = async (req, res, next) => {
         return res.status(500).json({ success: false, message: "Server error, please login again" });
     }
 };
+
 
 module.exports = middleware;
